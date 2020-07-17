@@ -2,16 +2,6 @@ Django>=3.0.8,<3.1.0
 #Install Django version (check pypi.org for the latest django version) that is equal or higher than 3.0.8, but less than 3.1.0, this is to ensure that docker install the latest version of django 3.0 with the latest minor version (.8 is the minor version) which has the secutiry features and fixes
 djangorestframework>=3.11.0,<3.12.0
 #Check pypi.org for the latest djangorestframework version - no space between the name
+flake8>=3.8.3,<3.9.0
+#linting tool - look up the latest version on pypi the puthon package index
 
-
-#SETUP STEPS:
-#Step 1: Create a repository in Github and clone it using Git Bash command "git clone SSP keys"
-#Step 2: Open the root folder on VS code using command "code ."
-#Step 3: Create a Dockerfile in the root folder, Add Image details to the Dockerfile
-#Step 4: Create a requirements.txt file in the root folder and add the packages that need to be installed 
-#Step 5: Create an emty folder caled "app" in the root folder
-#Step 6: Build Docker Image - Go to Command window - cd the root of the project path - use the command "docker build ." to build the Docker image using the Dockerfile located in the root of the project
-#Dockerfile is the standard convention that Docker uses to identify the Docker file within the within our project
-#Build Dockerfile and received the warning SECURITY WARNING: You are building a Docker image from Windows against a non-Windows Docker host. This warning is to indicatie files will be copied with the executable bit set (when using a Windows client). Docker is a Linux container
-#Step 7: Create Docker Compose configuration for the project, Docker Compose is the tool that allows us to run our Docker Image easily from our project location, so that it allows us to easily manage the different services (e.g., python, database) that make up our project
-#Create a new file called "docker-compose.yml", i.e., the docker compose configuration file, that contains the configuration for all the services that make up our project, i.e., where the Docker Compose will be located 
