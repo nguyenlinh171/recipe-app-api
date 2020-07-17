@@ -15,7 +15,7 @@
 #Step 4: Create a Django project using the Docker configurations created. We use Docker Compose to run a command on our Image that contains the Django dependencies and that will create the project file that we need for our app
 #Run cmd command: docker-compose run app sh -c "django-admin.py startproject app ."  
 #Note: The first command: docker-compose run app, where app is the name of the service that we want docker-compose to run, if there are multiple services listed here, select the name of the service
-#Note: sh -c can be skipped - the instructor uses it to separate the docker command to be run on the image
+#Note: sh -c (i.e., shell run command) can be skipped - the instructor uses it to separate the docker command to be run on the image
 #Note: The second command: django-admin.py startproject app ., it runs the django-admin management command that comes when we installed Django in the requirements.txt file, it runs the startproject command to create a new project called app, and the . symbol means starts the project in our current location, this links to the work directory app folder setup in the Dockerfile
 #Note: The result is the project called app is created in the app folder directory
 
@@ -28,7 +28,7 @@ services:
         ports: 
             - "8000:8000"
         volumes: 
-            - ./app:/app
+            - ./app:/app 
         command: >
-            sh -C "python manage.py runserver 0.0.0.0:8000"
+            sh -c "python manage.py runserver 0.0.0.0:8000"
             
