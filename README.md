@@ -40,3 +40,9 @@ To avoid git replacing LF with CRLF, e.g., incorrectly identify binary file as t
 #Step 12: Add the linting tool flake to the requriements.txt
 
 #Step 13: Add a flake configuration file in the django project folder (i.e., the app folder) 
+
+#Step 14: Repeat step 9 to commit our changes to Git
+commit message: Added flake8 and Travis-CI configuration. 
+
+#Step 15: Push the changes to Github
+cmd: git push origin
