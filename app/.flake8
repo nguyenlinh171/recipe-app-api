@@ -1,4 +1,4 @@
-#exclude some of the automated tools created by Django so it won't fail the linting, e.g., Limit all lines to a maximum of 79 characters is recommended for Python while Django allows upto 100 characters limit
+# Exclude some of the automated tools created by Django so it won't fail the linting, e.g., Limit all lines to a maximum of 79 characters is recommended for Python while Django allows upto 100 characters limit
 
 
 [flake8]

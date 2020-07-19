@@ -1,23 +1,24 @@
-#Step 1: Specify the version of Docker Compose that we will be writing our file for. Check the latest version at https://docs.docker.com/compose/compose-file/compose-versioning/
+# Step 1: Specify the version of Docker Compose that we'll be writing our file for.
+# Check the latest version at https://docs.docker.com/compose/compose-file/compose-versioning/
 
-#Step 2: Define the services that make up our application - the services will be run on Docker container and will be mapped through the ports configuration to our local machine 
-#Right now we only need one service called "app" for our application
-#(i) in the build section of the configuration, we set the context to . which is our current directory that we run in Docker, 
-#(ii) in the ports configuration - we'll map our project from port 8000 on our host to port 8000 on our image, 
-#(iii) in the volumes configuration (volumes allows us to get the updates that we make to our project into our Docker image in real time. So it maps volumes/any changes in the local machine into the docker container that will run the application), mapp the app directory in the project to the app directory in our Docker image 
-#(iv) the the command configuration, we enter the commands used to run the application in the Docker Container. command ">"" is used to break commands into differnet lines, make sure the indentation is one indent from where command starts for the second line where the commands start
-#sh -C "..." this will run the django development server available on all the IP addresses that run on Docker Container, it will run on port 8000 which is mapped through the ports configuration to our local machine. So we cna run our application and we can connect to it on port 8000 on our local machine
+# Step 2: Define the services that make up our application - the services will be run on Docker container and will be mapped through the ports configuration to our local machine 
+# Right now we only need one service called "app" for our application
+# (i) in the build section of the configuration, we set the context to . which is our current directory that we run in Docker, 
+# (ii) in the ports configuration - we'll map our project from port 8000 on our host to port 8000 on our image, 
+# (iii) in the volumes configuration (volumes allows us to get the updates that we make to our project into our Docker image in real time. So it maps volumes/any changes in the local machine into the docker container that will run the application), mapp the app directory in the project to the app directory in our Docker image 
+# (iv) the the command configuration, we enter the commands used to run the application in the Docker Container. command ">"" is used to break commands into differnet lines, make sure the indentation is one indent from where command starts for the second line where the commands start
+# sh -C "..." this will run the django development server available on all the IP addresses that run on Docker Container, it will run on port 8000 which is mapped through the ports configuration to our local machine. So we cna run our application and we can connect to it on port 8000 on our local machine
 
-#Step 3: Save the yml file - Build the Docker Compose - in command window, enter "docker-compose build"
-#Note: all the codelines have to be bundled together, indents mst be strictly correct, no redundant spaces, line13 should be empty - no comment in the middle otherwise error
-#The image is tagged with the name of the project 
+# Step 3: Save the yml file - Build the Docker Compose - in command window, enter "docker-compose build"
+# Note: all the codelines have to be bundled together, indents mst be strictly correct, no redundant spaces, line13 should be empty - no comment in the middle otherwise error
+# The image is tagged with the name of the project 
 
-#Step 4: Create a Django project using the Docker configurations created. We use Docker Compose to run a command on our Image that contains the Django dependencies and that will create the project file that we need for our app
-#Run cmd command: docker-compose run app sh -c "django-admin.py startproject app ."  
-#Note: The first command: docker-compose run app, where app is the name of the service that we want docker-compose to run, if there are multiple services listed here, select the name of the service
-#Note: sh -c (i.e., shell run command) can be skipped - the instructor uses it to separate the docker command to be run on the image
-#Note: The second command: django-admin.py startproject app ., it runs the django-admin management command that comes when we installed Django in the requirements.txt file, it runs the startproject command to create a new project called app, and the . symbol means starts the project in our current location, this links to the work directory app folder setup in the Dockerfile
-#Note: The result is the project called app is created in the app folder directory
+# Step 4: Create a Django project using the Docker configurations created. We use Docker Compose to run a command on our Image that contains the Django dependencies and that will create the project file that we need for our app
+# Run cmd command: docker-compose run app sh -c "django-admin.py startproject app ."  
+# Note: The first command: docker-compose run app, where app is the name of the service that we want docker-compose to run, if there are multiple services listed here, select the name of the service
+# Note: sh -c (i.e., shell run command) can be skipped - the instructor uses it to separate the docker command to be run on the image
+# Note: The second command: django-admin.py startproject app ., it runs the django-admin management command that comes when we installed Django in the requirements.txt file, it runs the startproject command to create a new project called app, and the . symbol means starts the project in our current location, this links to the work directory app folder setup in the Dockerfile
+# Note: The result is the project called app is created in the app folder directory
 
 version: "3"
 
@@ -31,4 +32,4 @@ services:
             - ./app:/app 
         command: >
             sh -c "python manage.py runserver 0.0.0.0:8000"
-            
+      

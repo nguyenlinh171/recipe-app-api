@@ -1,10 +1,10 @@
-#Language code: python
-#Specify the version of python to be used, at the moment the most stable version oof python on travis is 3.6
-#Specify the services we need to use - docker will include all the subservices included in the docker image
-#Before_Script: before it runs anything, we need to install docker compose
-#specify the script to run our docker compose command to run our test and linting tool (highlights syntactical and stylistic problems in your Python source code)
-#Result: Everythim we push a change to github, travis will run python 3.6, make the docker service available, use pip to install docker-compose, and finally run the script to run test and linting, it will send a notification email if there is an error 
-#Add the flake8 linting tool to the requirements.txt file
+# Language code: python
+# Specify the version of python to be used, at the moment the most stable version oof python on travis is 3.6
+# Specify the services we need to use - docker will include all the subservices included in the docker image
+# Before_Script: before it runs anything, we need to install docker compose
+# specify the script to run our docker compose command to run our test and linting tool (highlights syntactical and stylistic problems in your Python source code)
+# Result: Everythim we push a change to github, travis will run python 3.6, make the docker service available, use pip to install docker-compose, and finally run the script to run test and linting, it will send a notification email if there is an error 
+# Add the flake8 linting tool to the requirements.txt file
 
 Language: python
 python:

@@ -1,7 +1,11 @@
-Django>=3.0.8,<3.1.0
-#Install Django version (check pypi.org for the latest django version) that is equal or higher than 3.0.8, but less than 3.1.0, this is to ensure that docker install the latest version of django 3.0 with the latest minor version (.8 is the minor version) which has the secutiry features and fixes
-djangorestframework>=3.11.0,<3.12.0
-#Check pypi.org for the latest djangorestframework version - no space between the name
-flake8>=3.6.0,<3.7.0
-#linting tool - look up the latest version on pypi the puthon package index
+# Run cmd docker-compose build to build our container after adding a new requirement
 
+Django>=3.0.7,<3.1.0
+# Install Django version (check pypi.org for the latest django version) that is equal or higher than 3.0.8, but less than 3.1.0, this is to ensure that docker install the latest version of django 3.0 with the latest minor version (.8 is the minor version) which has the secutiry features and fixes
+djangorestframework>=3.11.0,<3.12.0
+# Check pypi.org for the latest djangorestframework version - no space between the name
+flake8>=3.6.0,<3.7.0
+# linting tool - look up the latest version on pypi the puthon package index
+# changing the flake8 version to higher level could cause problems
+django-verified-email-field>=1.6.1,<1.7.0
+# to generate verification email to verify email address
