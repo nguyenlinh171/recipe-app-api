@@ -132,3 +132,14 @@ TEST 3: AN EMAIL FIELD IS PROVIDED WHEN THE CREATE_USER FUNCTION IS CALLED
 
 TEST 4: CREATE SUPER USER
 Create super user is a function used by the Django CLI when we're creating new users using the command line. Make sure it's is included in the in our custom user model
+
+-Commit the Django project changes to Git
+cmd: git add .
+cmd: git commit -a
+Enter the commit message for your changes "Added custom user model" 
+Hit Escape before :wq to exit the insert mode
+cmd :wq (to write and quite)
+
+-Push the changes to Github
+cmd: git push origin
+Check Travis-CI for error:

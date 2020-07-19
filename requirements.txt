@@ -7,5 +7,3 @@ djangorestframework>=3.11.0,<3.12.0
 flake8>=3.6.0,<3.7.0
 # linting tool - look up the latest version on pypi the puthon package index
 # changing the flake8 version to higher level could cause problems
-django-verified-email-field>=1.6.1,<1.7.0
-# to generate verification email to verify email address
