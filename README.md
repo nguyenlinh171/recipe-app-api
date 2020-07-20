@@ -103,10 +103,9 @@ cmd docker-compose run app sh -c "python manage.py startapp core"
 Note:you can't have both folder and files named tests, it's better to have a foder so it's easier to scale up later.
 
 # Create custom user model - TDD approach
-
-TEST 1: CREATE NEW USER ACCOUNT USING EMAIL ADDRESS AND PASSWORD
 -Create test models in test_models.py
 
+TEST 1: CREATE NEW USER ACCOUNT USING EMAIL ADDRESS AND PASSWORD
 -Run unit test - Failed result 
 cmd docker-compose run app sh -c "python manage.py test && flake8"
 the create_user default requires the 'username' argument
@@ -120,7 +119,7 @@ NOTE: NEED TO RUN A MIGRATION EVERY TIME YOU MAKE CHANGES TO THE MODEL
 -Run unit test again - Expected result OK
 cmd docker-compose run app sh -c "python manage.py test && flake8"
 
-TEST 2: EMAIL ADDRESS IS NORMALIZED
+TEST 2: EMAIL ADDRESS IS NORMALIZED - MAKE THE DOMAIN PART OF THE EMAIL LOWERCASE
 -Normalise the email address that the users sign up with. The 2nd part of the user domain name is case-insensitive so we want to make that part all lowercase every time the users login to the system.
 -Add this feature to our create user function in test_models.py, run test
 -Add this feature to models.py - add normalize_email, a helper function that comes with the BaseUserManager
@@ -143,3 +142,21 @@ cmd :wq (to write and quite)
 -Push the changes to Github
 cmd: git push origin
 Check Travis-CI for error:
+
+# Update Django admin to manage custom user model - TDD approach
+Make changes to the admin.py so that it'll work with our custom user model
+
+-Add Test 1 for listing users in Django admin in test_admin.py
+-Run test - Failed docker-compose run app sh -c "python manage.py test && flake8"
+-Modify Django admin to support change user model in admin.py
+-Run test - Ok
+
+-Add Test 2 for editing users in test_admin.py. We don't need to test making posts and things like that to the change page because this is all part of the Django admin module and it's not recommended to test dependencies of your project. So we don't need to test features that are specific to the frameworks or external modules that you're using in your project. We just want to make sure that the code that we write works correctly.
+-Run test - Failed docker-compose run app sh -c "python manage.py test && flake8"
+-Modify Django admin to support change user model in admin.py
+-Run test - Ok
+
+-Add Test 3 for creating new users in test_admin.py
+-Run test - Failed docker-compose run app sh -c "python manage.py test && flake8"
+-Modify Django admin to support change user model in admin.py
+-Run test - Ok
