@@ -20,6 +20,22 @@
 # Note: The second command: django-admin.py startproject app ., it runs the django-admin management command that comes when we installed Django in the requirements.txt file, it runs the startproject command to create a new project called app, and the . symbol means starts the project in our current location, this links to the work directory app folder setup in the Dockerfile
 # Note: The result is the project called app is created in the app folder directory
 
+# Step 5: Add database, configure postgres image and environment variales to our db and app 
+# Note: for POSTGRES_PASSWORD in production, never shows the password
+# like below, the db password needs to be encrypted. On your build server
+# such as Travis, you'd then add an encrypted variable that overwrite
+# the below password when you push the application. It's never a good idea
+# to commit your password, SSH keys to your project, because if someone
+# see your project, they can see the authentication key to your project.
+# We use the below password to run the server locally.
+
+# We want our app to be dependent on our database service becoz (i) the
+# database service will start before the app service, (ii) the database
+# service will be available via the network when you use the hostname DB.
+# So when you're inside our app service you can connect to the hostname DB
+# and then it'll connect to whatever container is running on our DB service"""
+
+
 version: "3"
 
 services: 
@@ -31,5 +47,20 @@ services:
         volumes: 
             - ./app:/app 
         command: >
-            sh -c "python manage.py runserver 0.0.0.0:8000"
-      
+            sh -c "python manage.py wait_for_db &&
+                    python manage.py migrate &&
+                    python manage.py runserver 0.0.0.0:8000"
+        environment: 
+            - DB_HOST=db
+            - DB_NAME=app
+            - DB_USER=postgres
+            - DB_PASS=supersecretpassword
+        depends_on: 
+            - db
+
+    db:
+        image: postgres:10-alpine
+        environment: 
+            - POSTGRES_DB=app
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=supersecretpassword

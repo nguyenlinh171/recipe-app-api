@@ -9,7 +9,14 @@ ENV PYTHONUNBUFFERED=1.0
 
 # Store dependencies in the requirements.txt in the docker image and Install the listed Dependencies using PIP. Copy the requirements file in the root folder to the requirments file in the docker image
 COPY ./requirements.txt ./requirements.txt
+RUN apk add --update --no-cache postgresql-client
+# Install postgresql dependencies: it uses the package manager apk that comes with Alpine and it says this is the name of the package manager apk, and we're going to add a package. This update means update the registry before we add it but no cach means don't store the registry index on our docket file to minimise the no of extra files & packages that are included in our docker container
+RUN apk add --update --no-cache --virtual .tmp-build-deps \
+        gcc libc-dev linux-headers postgresql-dev
+# Install temporary (tmp) dependencies (deps) packages that need to be installed in the system while we run our requirments and we can remove them after the requirements has run. This is again to make sure our docker file has the absolute monimal footprint possible
 RUN pip install -r /requirements.txt
+RUN apk del .tmp-build-deps 
+# Delete tmp requirements after the requirements have run
 
 # Make a directory (create an empty folder call app on the docking image, set it as the default directory, copy the app folder (inc. codes) in our local machine to the docker image) within the docker image to store the application source code
 RUN mkdir /app
