@@ -219,3 +219,79 @@ ADD TESTS for wait_for_db command
 - Make Docker Compose to use wait_for_db command. Add the wait_for_db command to the command section under services in docker-compose.yml. Add the migrate command between the wait_for_db and runserver command before the service starts. This will run our database migrations on our database so it will create any tables that are required for our app.
 
 - Start the app and run the migration cmd: docker-compose up
+
+Commit the Django project changes to Git and Push the changes to Github
+- cmd: git add .
+- cmd: git commit -a
+- Enter the commit message for your changes "Configured postgres db." 
+- Hit Escape before :wq to exit the insert mode. cmd :wq (to write and quite)
+- cmd: git push origin
+
+
+Test in the browser
+- cmd: docker-compose up
+- Connect on our local host: open http://127.0.0.1:8000/ in the browser
+- Login to the admin page http://127.0.0.1:8000/admin
+- Create a new super user cmd: docker-compose run app sh -c "python manage.py createsuperuser"
+
+# Create User Management EndPoints
+These endpoints are going to allow us to create users, to update users, to change a user's password and to create user authentication tokens which can be used to authenticate requests to the other APIs in our project.
+
+- Step 1: Create a new app, a user's app in our Django project
+
+cmd docker-compose run --rm app sh -c "python manage.py startapp user"
+
+--rm is to remove the container after it runs the command, includes this in any command that you only want to run once and you don't want the docker container to linger on the system after it's ran. It's nice to do it just to make sure we don't run out of space or anything.
+
+Remove migrations, models, and admin bcoz we'e going to keep all within the core app
+
+Remove tests.py as we'll create a folder tests in the user folder app/user/tests. Add file test_users_api.py to the folder
+
+Open settings.py under project app/app, add Django Rest Framework, the auth token app as well which we are going to be using to authenticate with Django rest framework to the INSTALLED_APPS before the 'core' app, and add 'user' below 'core'
+
+- Step 2a: Add tests for create user API
+Add some unit tests to test creating users and different scenarios when we give different post requests.
+
+Create a new test file app/user/tests/test_user_api.py
+
+Run the test cmd docker-compose run --rm app sh -c "python manage.py test && flake8" --rm is used to remove the container after it runs the command - Error django.urls.exceptions.NoReverseMatch: 'user' is not a registered namespace
+
+- Step 2b: Implement User API to make our test passed 
+1. Create a serializer for our create user request
+    - Django's serialization framework provides a mechanism for “translating” Django models into other formats.
+    - Create app/user/serializers.py to store our serializers for our users.
+2. Create a view which will handle the request
+    - Update app/user/views/py to add a view for managing our create user API
+3. Before we can actually access our API we need to add a URL and wire the URL up to our view which will allow us to access the API and make our tests pass
+    - Create app/user/urls.py
+    - Update the main app URLs which we need to tell it to pass any request that is for such user to our users URLs - Update app/app/urls.py 
+    - Run the test cmd docker-compose run --rm app sh -c "python manage.py test && flake8" - No error - now we have a functioning create user API in our project.
+
+- Step 3a: Add tests for creating a new token API endpoint
+This is going to be an endpoint that you can make a HTTP POST request and you can generate a temporary auth token that you can then use to authenticate future requests with the API. With our API we're going to be using token authentication.
+
+So the way that you log in is you use this API to generate a token and then you provide that token as the authentication header for future requests which you want to authenticate. The benefit of this is you don't need to send the user's username and password with every single request that you make. You just need to send it once to create the token and then you can use that token for future requests and if you ever want to revoke the token you can do that in the database.
+
+Create 4 unit tests:
+1. Test that the token is created ok
+2. Test to check what happens if we provide invalid credentials
+3. Test to check if you're trying to authenticate against a non-existent user
+4. Test if you provide a request that doesn't include a password
+
+In test_user_api.py
+Add the TOKEN_URL that we're going to use to make the HTTP POST request to generate our token. (the purpose of this API is to start authentication, so don't need to add authentication to this API - it can be added to the public user API test, i.e., add the Token tests to the exisiting class PublicUserApiTests(TestCase), no need to create a new class
+
+Run the test cmd:
+docker-compose run --rm app sh -c "python manage.py test && flake8"
+--rm is used to remove the container after it runs the command
+Error: django.urls.exceptions.NoReverseMatch: Reverse for 'token' not found. Because we haven't created the token url yet
+
+- Step 3b: Create our new token API endpoint to make out unit pass
+1. In serializers.py
+Create a new serializer class called AuthTokenSerializer based off the Django standard serializers module and we're going to use this for authenticating our requests
+
+2. In views.py
+Create our authentication view or our create token view.
+
+3. In urls.py
+Add the token url 
