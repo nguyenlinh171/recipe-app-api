@@ -295,3 +295,41 @@ Create our authentication view or our create token view.
 
 3. In urls.py
 Add the token url 
+
+4. Test it in Chrome
+Make sure our app is running cmd: docker-compose up
+Go to 127.0.0.1:8000/api/user/create on Chrome browser to check if we can create user
+Go to 127.0.0.1:8000/api/user/token to check if we can authenticate
+
+So when we create our client app that consumes the API what we would do is we would take this token and we would store it in a cookie or in the some kind of persistent storage that we could then use to authenticate with future requests. 
+
+Ctrl + C to stop a program running from the command prompt
+
+5. Commit the Django project changes to Git and Push the changes to Github
+    - cmd: git add .
+    - cmd: git commit -a
+    - Press Ctrl + A to Enter the commit message for your changes "Added endpoint for creating and authenticating users" 
+    - Hit Escape before :wq to exit the insert mode. cmd :wq (to write and quite)
+    - cmd: git push origin
+
+- Step 4a: Add tests for manage user endpoint 
+    - add tests to the test_user_api.py file
+
+    Test 1 in the public user api: Ensure that authentication is required on the manager end point - We'll test it in the public user api (no authentication is added), as if we are an unauthenticated user. First add the ME_URL (ME: Manage Endpoint)
+
+    Test 2-5 in the private user api (the private means that authentication is required before you can use these endpoints): add some authenticated requests to our endpoint and test (i) that we're going to add is the retrieve profile successful and (ii) that we can actually update the user using the API. The test that post is not allowed so we're not going to support post on the me endpoint we're just going to support patch and put to update it (So we only want them to allow them to edit the endpoint). Post is used for creating objects and put and patch I usually use for editing objects.
+
+Run the test cmd:
+docker-compose run --rm app sh -c "python manage.py test && flake8"
+--rm is used to remove the container after it runs the command
+Error:
+
+- Step 4b: Create Manage User Endpoint 
+    - views.py: add a custom view using the retrieve update API view from the Django rest framework generic API view options.
+    
+    - serializers.py to add an additional function to the existing serializer for updating our user object. Add an update function below the create function (def create())
+
+    - urls.py to add our me path (manage end user path)
+
+    Run the test cmd:
+docker-compose run --rm app sh -c "python manage.py test && flake8"
